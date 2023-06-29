@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rules3.c                                           :+:      :+:    :+:   */
+/*   sorting2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 10:29:50 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/29 13:29:25 by jalves-p         ###   ########.fr       */
+/*   Created: 2023/05/31 10:46:40 by jalves-p          #+#    #+#             */
+/*   Updated: 2023/06/29 14:24:52 by jalves-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	rr(t_lst **stack_a, t_lst **stack_b)
+void	sort_rest(t_lst **a, t_lst **b)
 {
-	ra(stack_a);
-	rb(stack_b);
-	write(1, "rr\n", 3);
-}
+	int	size;
 
-void	rrr(t_lst **stack_a, t_lst **stack_b)
-{
-	rra(stack_a);
-	rrb(stack_b);
-	write(1, "rrr\n", 4);
+	size = ft_lstsize(*a);
+	while ((size - 5) > 0)
+	{
+		pb(a, b);
+		size--;
+	}
+	sort_five(a, b);
+	while (*b)
+	{
+		move_to_top(a, b);
+		pa(a, b);
+	}
+	reorganize(a, ft_lstsize(*a));
 }

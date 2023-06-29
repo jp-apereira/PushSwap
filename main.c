@@ -1,27 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rules3.c                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 10:29:50 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/29 13:29:25 by jalves-p         ###   ########.fr       */
+/*   Created: 2023/06/12 13:44:54 by jalves-p          #+#    #+#             */
+/*   Updated: 2023/06/29 15:35:38 by jalves-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	rr(t_lst **stack_a, t_lst **stack_b)
+int	main(int ac, char **av)
 {
-	ra(stack_a);
-	rb(stack_b);
-	write(1, "rr\n", 3);
-}
+	t_lst	*a;
+	t_lst	*b;
 
-void	rrr(t_lst **stack_a, t_lst **stack_b)
-{
-	rra(stack_a);
-	rrb(stack_b);
-	write(1, "rrr\n", 4);
+	b = NULL;
+	if (ac < 2)
+		exit(1);
+	if (ac > 1)
+	{
+		if (check_errors(av) == -1)
+		{
+			write(2, "Error\n", 6);
+			exit(1);
+		}
+		a = create_stack(ac, av);
+		define_sort(&a, &b, ac);
+	}
+	if (stack_sorted(&a))
+	{
+		exit(0);
+	}
 }

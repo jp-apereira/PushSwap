@@ -6,79 +6,82 @@
 /*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 10:29:27 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/01 11:31:03 by jalves-p         ###   ########.fr       */
+/*   Updated: 2023/06/29 13:28:03 by jalves-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	ra(int *stack_a, int wrt)
+void	ra(t_lst **stack_a)
 {
-	int	i;
-	int	temp;
+	t_lst	*temp;
+	t_lst	*current;
 
-	i = -1;
-	temp = stack_a[0];
-	while (stack_a[++i] != MAX_SORT)
-		stack_a[i] = stack_a[i + 1];
-	stack_a[i - 1] = temp;
-	stack_a[i] = MAX_SORT;
-	if (wrt)
-		write(1, "ra\n", 3);
+	if (*stack_a == NULL || (*stack_a)->next == NULL)
+		return ;
+	temp = *stack_a;
+	*stack_a = (*stack_a)->next;
+	current = *stack_a;
+	while (current->next != NULL)
+		current = current->next;
+	temp->next = NULL;
+	temp->prev = current;
+	current->next = temp;
+	write(1, "ra\n", 3);
 }
 
-void	rb(int *stack_b, int wrt)
+void	rb(t_lst **stack_b)
 {
-	int	i;
-	int	temp;
+	t_lst	*temp;
+	t_lst	*current;
 
-	i = -1;
-	temp = stack_b[0];
-	while (stack_b[++i] != MAX_SORT)
-		stack_b[i] = stack_b[i + 1];
-	stack_b[i - 1] = temp;
-	stack_b[i] = MAX_SORT;
-	if (wrt)
-		write(1, "rb\n", 3);
+	if (*stack_b == NULL || (*stack_b)->next == NULL)
+		return ;
+	temp = *stack_b;
+	*stack_b = (*stack_b)->next;
+	current = *stack_b;
+	while (current->next != NULL)
+		current = current->next;
+	temp->next = NULL;
+	temp->prev = current;
+	current->next = temp;
+	write(1, "rb\n", 3);
 }
 
-void	rra(int *stack_a, int wrt)
+void	rra(t_lst **stack_a)
 {
-	int	i;
-	int	temp;
+	t_lst	*temp;
+	t_lst	*current;
 
-	i = 0;
-	while (stack_a[i] != MAX_SORT)
-		i++;
-	temp = stack_a[i - 1];
-	i--;
-	while (i > 0)
-	{
-		stack_a[i] = stack_a[i - 1];
-		i--;
-	}
-	stack_a[i - 1] = temp;
-	stack_a[i] = MAX_SORT;
-	if (wrt)
-		write(1, "ra\n", 3);
+	if (*stack_a == NULL || (*stack_a)->next == NULL)
+		return ;
+	current = *stack_a;
+	while (current->next != NULL)
+		current = current->next;
+	temp = current->prev;
+	temp->next = NULL;
+	current->prev = NULL;
+	current->next = *stack_a;
+	(*stack_a)->prev = current;
+	*stack_a = current;
+	write(1, "rra\n", 4);
 }
 
-void	rrb(int *stack_b, int wrt)
+void	rrb(t_lst **stack_b)
 {
-	int	i;
-	int	temp;
+	t_lst	*temp;
+	t_lst	*current;
 
-	i = 0;
-	while (stack_b[i] != MAX_SORT)
-		i++;
-	temp = stack_b[i - 1];
-	i--;
-	while (i > 0)
-	{
-		stack_b[i] = stack_b[i - 1];
-		i--;
-	}
-	stack_b[0] = temp;
-	if (wrt)
-		write(1, "rrb\n", 4);
+	if (*stack_b == NULL || (*stack_b)->next == NULL)
+		return ;
+	current = *stack_b;
+	while (current->next != NULL)
+		current = current->next;
+	temp = current->prev;
+	temp->next = NULL;
+	current->prev = NULL;
+	current->next = *stack_b;
+	(*stack_b)->prev = current;
+	*stack_b = current;
+	write(1, "rrb\n", 4);
 }

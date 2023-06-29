@@ -1,15 +1,13 @@
-
-SRCS			=	ft_printf.c\
-					ft_nums.c\
-					ft_printf_utils.c\
+SRCS			=checkers.c errors.c ft_utils.c ft_utils2.c\
+					rules1.c rules2.c rules3.c rules4.c\
+					sort_utils.c sort_utils2.c sorting.c sorting2.c main.c\
 
 OBJS			= $(SRCS:.c=.o)
 
-CC				= gcc
+CC				= cc
 RM				= rm -f
-CFLAGS			= -Wall -Wextra -Werror
-
-NAME			= push_swap.a
+CFLAGS			= -Wall -Wextra -Werror -g -I inc
+NAME			= push_swap
 
 all:			$(NAME)
 

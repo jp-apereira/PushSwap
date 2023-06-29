@@ -6,54 +6,40 @@
 /*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 10:30:24 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/01 09:34:25 by jalves-p         ###   ########.fr       */
+/*   Updated: 2023/06/13 16:32:33 by jalves-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	pb(int *stack_a, int *stack_b, int wrt)
+void	pb(t_lst **stack_a, t_lst **stack_b)
 {
-	int	i;
+	t_lst	*new_node;
 
-	i = 0;
-	while (stack_b[i] != MAX_SORT)
-		i++;
-	stack_b[i + 1] = MAX_SORT;
-	while (i > 0)
-	{
-		stack_b[i] = stack_b[i - 1];
-		i--;
-	}
-	stack_b[0] = stack_a[0];
-	stack_a[0] = 0;
-	i = 0;
-	while (stack_a[++i] != MAX_SORT)
-		stack_a[i - 1] = stack_a[i];
-	stack_a[i - 1] = MAX_SORT;
-	if (wrt)
-		write(1, "pb\n", 3);
+	if (*stack_a == NULL)
+		return ;
+	new_node = *stack_a;
+	*stack_a = (*stack_a)->next;
+	new_node->next = *stack_b;
+	new_node->prev = NULL;
+	if (*stack_b != NULL)
+		(*stack_b)->prev = new_node;
+	*stack_b = new_node;
+	write(1, "pb\n", 3);
 }
 
-void	pa(int *stack_a, int *stack_b, int wrt)
+void	pa(t_lst **stack_a, t_lst **stack_b)
 {
-	int	i;
+	t_lst	*new_node;
 
-	i = 0;
-	while (stack_a[i] != MAX_SORT)
-		i++;
-	stack_a[i + 1] = MAX_SORT;
-	while (i > 0)
-	{
-		stack_a[i] = stack_a[i - 1];
-		i--;
-	}
-	stack_a[0] = stack_b[0];
-	stack_b[0] = 0;
-	i = 0;
-	while (stack_b[++i] != MAX_SORT)
-		stack_b[i - 1] = stack_b[i];
-	stack_b[i - 1] = MAX_SORT;
-	if (wrt)
-		write(1, "pa\n", 3);
+	if (*stack_b == NULL)
+		return ;
+	new_node = *stack_b;
+	*stack_b = (*stack_b)->next;
+	new_node->next = *stack_a;
+	new_node->prev = NULL;
+	if (*stack_a != NULL)
+		(*stack_a)->prev = new_node;
+	*stack_a = new_node;
+	write(1, "pb\n", 3);
 }

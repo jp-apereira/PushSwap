@@ -6,44 +6,39 @@
 /*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 10:29:03 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/01 09:34:35 by jalves-p         ###   ########.fr       */
+/*   Updated: 2023/06/13 11:53:52 by jalves-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	sb(int *stack_b, int wrt)
+void	sb(t_lst *stack_b)
 {
-	int	temp;
+	t_lst	*temp;
 
-	temp = stack_b[0];
-	stack_b[0] = stack_b[1];
-	stack_b[1] = temp;
-	if (wrt)
-		write(1, "sb\n", 3);
+	temp = stack_b->next;
+	stack_b->next = temp->next;
+	temp->next = stack_b;
+	stack_b->prev = temp;
+	temp->prev = NULL;
+	write(1, "sb\n", 3);
 }
 
-void	sa(int *stack_a, int wrt)
+void	sa(t_lst *stack_a)
 {
-	int	temp;
+	t_lst	*temp;
 
-	temp = stack_a[0];
-	stack_a[0] = stack_a[1];
-	stack_a[1] = temp;
-	if (wrt)
-		write(1, "sa\n", 3);
+	temp = stack_a->next;
+	stack_a->next = temp->next;
+	temp->next = stack_a;
+	stack_a->prev = temp;
+	temp->prev = NULL;
+	write(1, "sa\n", 3);
 }
 
-void	ss(int *stack_a, int *stack_b, int wrt)
+void	ss(t_lst *stack_a, t_lst *stack_b)
 {
-	int temp;
-
-	temp = stack_a[0];
-	stack_a[0] = stack_a[1];
-	stack_a[1] = temp;
-	temp = stack_b[0];
-	stack_b[0] = stack_b[1];
-	stack_b[1] = temp;
-	if (wrt)
-		write(1, "ss\n", 3);
+	sa(stack_a);
+	sb(stack_b);
+	write(1, "ss\n", 3);
 }
