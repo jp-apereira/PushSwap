@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaopereira <joaopereira@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 18:09:25 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/29 13:03:40 by jalves-p         ###   ########.fr       */
+/*   Updated: 2023/07/11 18:51:29 by joaopereira      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ t_lst	*ft_addback(long val)
 	t_lst	*new;
 
 	new = malloc(sizeof(t_lst));
-	if (new == NULL)
+	if (new == NULL || !new)
+	{
 		return (NULL);
+		free(new);
+	}
 	new->content = val;
 	new->next = NULL;
 	return (new);

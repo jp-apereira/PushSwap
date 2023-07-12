@@ -1,25 +1,24 @@
-SRCS			=checkers.c errors.c ft_utils.c ft_utils2.c\
-					rules1.c rules2.c rules3.c rules4.c\
-					sort_utils.c sort_utils2.c sorting.c sorting2.c main.c\
-
-OBJS			= $(SRCS:.c=.o)
-
-CC				= cc
-RM				= rm -f
-CFLAGS			= -Wall -Wextra -Werror -g -I inc
 NAME			= push_swap
 
-all:			$(NAME)
+CC = cc
 
-$(NAME):		$(OBJS)
-				ar rcs $(NAME) $(OBJS)
+RM = rm -f 
+
+CFLAGS			= -Wall -Wextra -Werror -g -I inc
+
+SRCS			= checkers.c errors.c ft_utils.c ft_utils2.c\
+					rules1.c rules2.c rules3.c rules4.c\
+					sort_utils.c sort_utils1.c sort_utils2.c sorting.c sorting2.c main.c\
+
+
+all : $(NAME)
+
+$(NAME): $(SRCS)
+			$(CC) $(SRCS) -o $(NAME)
 
 clean:
-				$(RM) $(OBJS)
+	rm -f $(NAME)
 
-fclean:			clean
-				$(RM) $(NAME)
+fclean: clean
 
-re:				fclean $(NAME)
-
-.PHONY:			all clean fclean
+re: fclean $(NAME)

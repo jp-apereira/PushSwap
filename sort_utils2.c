@@ -6,107 +6,83 @@
 /*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 18:09:25 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/29 15:11:11 by jalves-p         ###   ########.fr       */
+/*   Updated: 2023/07/12 16:27:36 by jalves-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	find_idx(t_lst **stack, int val)
+t_move	neighbour_high(t_lst *a, int num_b)
 {
-	t_lst	*curr;
-	int		index;
+	t_move	max;
+	t_move	curr;
+	int		i;
+	int		size;
 
-	curr = *stack;
-	index = 0;
-	while (curr)
+	i = 0;
+	max.found = false;
+	size = ft_lstsize(a);
+	while (a)
 	{
-		if (curr->content == val)
-			return (index);
-		index++;
-		curr = curr->next;
+		curr = (t_move){.index = i, .num = a->content, .moves = i,
+			.to_top = true, .found = true, .node = a};
+		if (curr.index > size / 2)
+			curr.moves = size - i + 1;
+		if ((max.num > a->content && a->content > num_b) || (max.found == false
+				&& a->content > num_b))
+			max = curr;
+		a = a->next;
+		i++;
 	}
-	return (-1);
+	return (max);
 }
 
-void	move_to_top(t_lst **a, t_lst **b)
+t_move	neighbour_lower(t_lst *a, int num_b)
 {
-	t_move	num;
-	t_move	neighbour;
-	int		size_a;
-	int		size_b;
-	int		same_moves;
+	t_move	min;
+	t_move	curr;
+	int		i;
+	int		size;
 
-	size_a = ft_lstsize(*a);
-	size_b = ft_lstsize(*b);
-	num = numb_moves((*a), (*b));
-	neighbour = *num.neighbour;
-	if (num.b < num.a)
-		same_moves = num.b;
-	else
-		same_moves = num.a;
-	if (same_moves > 0 && (neighbour.index > size_a / 2) == (num.index > size_b
-			/ 2))
+	i = 0;
+	min.found = false;
+	size = ft_lstsize(a);
+	while (a)
 	{
-		while (--same_moves > 0)
-		{
-			if (num.index > size_b / 2)
-				rrr(a, b);
-			else
-				rr(a, b);
-		}
-		num.index = find_idx(b, num.num);
-		neighbour.index = find_idx(a, neighbour.num);
+		curr = (t_move){.index = i, .num = a->content, .moves = i + 1,
+			.to_top = false, .found = true, .node = a};
+		if (curr.index > size / 2)
+			curr.moves = size - i;
+		if ((min.num < a->content && a->content < num_b) || (min.found == false
+				&& a->content < num_b))
+			min = curr;
+		a = a->next;
+		i++;
 	}
-	while ((*b)->content != num.num)
-	{
-		if (num.index > size_b / 2)
-			rrb(b);
-		else
-			rb(b);
-	}
-	if (neighbour.to_top == false)
-	{
-		while (neighbour.node->next)
-		{
-			if (neighbour.index > size_a / 2)
-				rra(a);
-			else
-				ra(a);
-		}
-	}
-	else
-	{
-		while ((*a)->content != neighbour.num)
-		{
-			if (neighbour.index > size_a / 2)
-				rra(a);
-			else
-				ra(a);
-		}
-	}
-	free(num.neighbour);
+	return (min);
 }
 
-void	reorganize(t_lst **a, int size_list)
+t_move	find_best_nei(t_lst *s, int num)
 {
-	int	smaller;
-	int	index;
+	t_move	min;
+	t_move	max;
 
-	smaller = encontrar_menor(*a);
-	index = find_idx(a, smaller);
-	while ((*a)->content != smaller)
-	{
-		if (index > size_list / 2)
-			rra(a);
-		else
-			ra(a);
-	}
+	min = neighbour_lower(s, num);
+	max = neighbour_high(s, num);
+	if (min.found == false)
+		return (max);
+	else if (max.found == false)
+		return (min);
+	else if (min.moves < max.moves)
+		return (min);
+	else if (min.moves > max.moves)
+		return (max);
+	return (max);
 }
 
 void	smallest_top(t_lst **a, int size_list, int index)
 {
-	int i;
+	int	i;
 
 	i = index;
 	if (index + 1 <= (size_list / 2))
@@ -124,5 +100,21 @@ void	smallest_top(t_lst **a, int size_list, int index)
 			rra(a);
 			i++;
 		}
+	}
+}
+
+void	reorganize(t_lst **a, int size_list)
+{
+	int	smaller;
+	int	index;
+
+	smaller = encontrar_menor(a);
+	index = find_idx(a, smaller);
+	while ((*a)->content != smaller)
+	{
+		if (index > size_list / 2)
+			rra(a);
+		else
+			ra(a);
 	}
 }

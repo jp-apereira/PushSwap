@@ -6,66 +6,79 @@
 /*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 13:01:53 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/29 15:36:28 by jalves-p         ###   ########.fr       */
+/*   Updated: 2023/07/12 16:19:47 by jalves-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	ft_duplicate(char **s)
+int	ft_duplicate(int ac, char **av)
 {
 	int	i;
-	int	j;
+	int	a;
 
 	i = 1;
-	if (!s || !(*s))
-		return (1);
-	while (s[i])
+	while (i < ac - 1)
 	{
-		j = 1;
-		while (j < i)
+		a = i + 1;
+		while (a < ac)
 		{
-			if (ft_atoi(s[i]) == ft_atoi(s[j]))
-				return (1);
-			j++;
+			if (ft_atoi(av[i]) == ft_atoi(av[a]))
+				return (-1);
+			a++;
 		}
 		i++;
 	}
 	return (0);
 }
 
-int	ft_is_all_number(char **s)
+int	ft_is_all_number(int ac, char **av)
 {
 	int	i;
-	int	j;
+	int	a;
 
-	i = 0;
-	j = 0;
-	while (s[i])
+	i = 1;
+	while (i < ac)
 	{
-		j = 0;
-		while (s[i][j])
+		a = 0;
+		if (!av[i][a])
+			return (-1);
+		while (av[i][a])
 		{
-			if (!(s[i][j] >= 48 && s[i][j] <= 57))
-				return (1);
+			if ((av[i][a] == '-' || av[i][a] == '+') && a == 0)
+			{
+				a++;
+			}
+			if (av[i][a] >= '0' && av[i][a] <= '9')
+				a++;
+			else
+				return (-1);
 		}
 		i++;
 	}
 	return (0);
 }
 
-int	check_errors(char **av)
+int	higher_smaller_int(int ac, char **av)
 {
-	int		i;
-	long	tmp;
+	int	i;
 
-	i = 0;
-	while (av[++i])
+	i = 1;
+	while (i < ac)
 	{
-		tmp = ft_atoi(av[i]);
-		if (ft_duplicate(av) || ft_is_all_number(av) || tmp > INT_MAX
-			|| tmp < INT_MIN)
-			return -1;
+		if (ft_atoi(av[i]) >= INT_MAX || ft_atoi(av[i]) <= INT_MIN)
+			return (-1);
+		i++;
 	}
-	return 0;
+	return (0);
+}
+
+int	check_errors(int ac, char **av)
+{
+	if (ft_is_all_number(ac, av) == -1 || ft_duplicate(ac, av) == -1
+		|| higher_smaller_int(ac, av) == -1)
+	{
+		return (-1);
+	}
+	return (0);
 }

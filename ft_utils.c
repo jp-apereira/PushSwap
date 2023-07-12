@@ -6,34 +6,37 @@
 /*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 18:09:25 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/29 13:38:34 by jalves-p         ###   ########.fr       */
+/*   Updated: 2023/07/12 16:24:44 by jalves-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	ft_atoi(char *str)
+long	ft_atoi(char *str)
 {
-	long int	i;
-	long int	total;
+	int			i;
 	int			sign;
+	long int	res;
 
-	total = 0;
 	i = 0;
+	sign = 1;
+	res = 0;
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
-	sign = (str[i] != '-') - (str[i] == '-');
-	if (str[i] == '-' || str[i] == '+')
+	if (str[i] == '+')
 		i++;
+	else if (str[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		total *= 10;
-		total += str[i++] - 48;
-	}
-	total *= sign;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		res *= 10;
+		res += str[i] - 48;
 		i++;
-	return (total);
+	}
+	return (res * sign);
 }
 
 int	ft_lstsize(t_lst *lst)
@@ -49,36 +52,51 @@ int	ft_lstsize(t_lst *lst)
 	return (i);
 }
 
-int	encontrar_menor(t_lst *stack_a)
+int	encontrar_menor(t_lst **a)
 {
-	int		menor;
+	int		i;
 	t_lst	*current;
 
-	menor = stack_a->content;
-	current = stack_a->next;
-	while (current != NULL)
+	i = (*a)->content;
+	current = *a;
+	while (current)
 	{
-		if (current->content < menor)
-		{
-			menor = current->content;
-		}
+		if (current->content < i)
+			i = current->content;
 		current = current->next;
 	}
-	return (menor);
+	return (i);
 }
 
-int	encontrar_maior(t_lst *stack_a)
+int	encontrar_maior(t_lst **a)
 {
-	int		maior;
+	int		i;
 	t_lst	*current;
 
-	maior = stack_a->content;
-	current = stack_a->next;
-	while (current != NULL)
+	i = (*a)->content;
+	current = *a;
+	while (current)
 	{
-		if (current->content > maior)
-			maior = current->content;
+		if (current->content > i)
+			i = current->content;
 		current = current->next;
 	}
-	return (maior);
+	return (i);
+}
+
+int	find_idx(t_lst **a, int val)
+{
+	t_lst	*curr;
+	int		index;
+
+	curr = *a;
+	index = 0;
+	while (curr)
+	{
+		if (curr->content == val)
+			return (index);
+		index++;
+		curr = curr->next;
+	}
+	return (-1);
 }

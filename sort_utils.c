@@ -6,109 +6,87 @@
 /*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 16:54:25 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/29 14:14:26 by jalves-p         ###   ########.fr       */
+/*   Updated: 2023/07/12 16:28:13 by jalves-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_move	neighbour_high(t_lst *a, int num_b)
+void	move_to_top1(t_move num, t_move neighbour, t_lst **b, t_lst **a)
 {
-	t_move	max;
-	t_move	curr;
-	int		i;
-	int		size;
+	int	size_a;
+	int	size_b;
+	int	same_moves;
 
-	i = 0;
-	max.found = false;
-	size = ft_lstsize(a);
-	while (a)
+	size_a = ft_lstsize(*a);
+	size_b = ft_lstsize(*b);
+	if (num.b < num.a)
+		same_moves = num.b;
+	else
+		same_moves = num.a;
+	if (same_moves > 0 && (neighbour.index > size_a / 2) == (num.index > size_b
+			/ 2))
 	{
-		curr = (t_move){.index = i, .num = a->content, .moves = i, .to_top = true,
-			.found = true, .node = a};
-		if (curr.index > size / 2)
-			curr.moves = size - i + 1;
-		if ((max.num > a->content && a->content > num_b) || (max.found == false
-				&& a->content > num_b))
-			max = curr;
-		a = a->next;
-		i++;
+		while (--same_moves > 0)
+			rrr_or_rr(a, b, size_b, num);
+		num.index = find_idx(b, num.num);
+		neighbour.index = find_idx(a, neighbour.num);
 	}
-	return (max);
+	while ((*b)->content != num.num)
+		rrb_or_rb(b, num, size_b);
+	if (neighbour.to_top == false)
+		rra_or_ra(neighbour, size_a, a);
+	else
+		rra_or_ra(neighbour, size_a, a);
+	free(num.neighbour);
 }
 
-t_move	neighbour_lower(t_lst *a, int num_b)
+void	rrr_or_rr(t_lst **a, t_lst **b, int size_b, t_move num)
 {
-	t_move	min;
-	t_move	curr;
-	int		i;
-	int		size;
+	if (num.index > size_b / 2)
+		rrr(a, b);
+	else
+		rr(a, b);
+}
 
-	i = 0;
-	min.found = false;
-	size = ft_lstsize(a);
-	while (a)
+void	rrb_or_rb(t_lst **b, t_move num, int size_b)
+{
+	if (num.index > size_b / 2)
+		rrb(b);
+	else
+		rb(b);
+}
+
+void	rra_or_ra(t_move neighbour, int size_a, t_lst **a)
+{
+	if (neighbour.to_top == false)
 	{
-		curr = (t_move){.index = i, .num = a->content, .a = i, .to_top = true,
-			.found = true, .node = a};
-		if (curr.b > size / 2)
-			curr.b = size - i;
-		if ((min.num < a->content && a->content < num_b) || (min.found == false
-				&& a->content < num_b))
-			min = curr;
-		a = a->next;
-		i++;
-	}
-	return (min);
-}
-t_move	find_best_nei(t_lst *s, int num)
-{
-	t_move	min;
-	t_move	max;
-
-	min = neighbour_lower(s, num);
-	max = neighbour_high(s, num);
-	if (min.found == false)
-		return (max);
-	else if (max.found == false)
-		return (min);
-	else if (min.moves < max.moves)
-		return (min);
-	else if (min.moves > max.moves)
-		return (max);
-	return (max);
-}
-
-t_move	numb_moves(t_lst *a, t_lst *b)
-{
-	t_move	min;
-	t_move	curr;
-	t_move	best;
-	int		i;
-	int		size;
-
-	i = 0;
-	min.found = false;
-	min.neighbour = NULL;
-	size = ft_lstsize(b);
-	while (b)
-	{
-		curr = (t_move){.index = i, .num = b->content, .b = i, .to_top = true,
-			.found = true, .node = b};
-		if (curr.b > size / 2)
-			curr.b = size - i + 1;
-		best = find_best_nei(a, b->content);
-		curr.a = best.moves;
-		curr.moves = curr.a + curr.b;
-		if (!min.found || min.moves > curr.moves)
+		while (neighbour.node->next)
 		{
-			free(min.neighbour);
-			min = curr;
-			min.neighbour = malloc(sizeof(t_move));
-			*min.neighbour = best;
+			if (neighbour.index > size_a / 2)
+				rra(a);
+			else
+				ra(a);
 		}
-		b = b->next;
-		i++;
 	}
-	return (min);
+	else
+	{
+		while ((*a)->content != neighbour.num)
+		{
+			if (neighbour.index > size_a / 2)
+				rra(a);
+			else
+				ra(a);
+		}
+	}
+}
+
+void	move_to_top2(t_lst **a, t_lst **b)
+{
+	t_move	num;
+	t_move	neighbour;
+
+	num = numb_moves((*a), (*b));
+	neighbour = *num.neighbour;
+	move_to_top1(num, neighbour, b, a);
 }

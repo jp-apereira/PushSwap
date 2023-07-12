@@ -6,7 +6,7 @@
 /*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 12:34:50 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/29 13:49:04 by jalves-p         ###   ########.fr       */
+/*   Updated: 2023/07/12 11:56:42 by jalves-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@ void	define_sort(t_lst **stack_a, t_lst **stack_b, int ac)
 		sort_two(stack_a);
 	else if (ac == 4)
 		sort_three(stack_a);
-	else if (ac <= 6)
+	else if (ac == 5)
+		sort_4(stack_a, stack_b);
+	else if (ac == 6)
 		sort_five(stack_a, stack_b);
-	else
+	else if (ac > 6)
 		sort_rest(stack_a, stack_b);
 }
 
@@ -32,7 +34,7 @@ int	stack_sorted(t_lst **stack)
 	t_lst	*curr;
 
 	if (!stack || !(*stack)->next)
-		return (1);
+		return (-1);
 	val = (*stack)->content;
 	curr = (*stack)->next;
 	while (curr)

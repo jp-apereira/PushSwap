@@ -6,7 +6,7 @@
 /*   By: jalves-p <jalves-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 10:30:24 by jalves-p          #+#    #+#             */
-/*   Updated: 2023/06/13 16:32:33 by jalves-p         ###   ########.fr       */
+/*   Updated: 2023/07/12 11:49:02 by jalves-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,26 @@
 
 void	pb(t_lst **stack_a, t_lst **stack_b)
 {
-	t_lst	*new_node;
+	t_lst	*temp;
 
 	if (*stack_a == NULL)
 		return ;
-	new_node = *stack_a;
+	temp = *stack_a;
 	*stack_a = (*stack_a)->next;
-	new_node->next = *stack_b;
-	new_node->prev = NULL;
-	if (*stack_b != NULL)
-		(*stack_b)->prev = new_node;
-	*stack_b = new_node;
+	temp->next = *stack_b;
+	*stack_b = temp;
 	write(1, "pb\n", 3);
 }
 
 void	pa(t_lst **stack_a, t_lst **stack_b)
 {
-	t_lst	*new_node;
+	t_lst	*temp;
 
 	if (*stack_b == NULL)
 		return ;
-	new_node = *stack_b;
+	temp = *stack_b;
 	*stack_b = (*stack_b)->next;
-	new_node->next = *stack_a;
-	new_node->prev = NULL;
-	if (*stack_a != NULL)
-		(*stack_a)->prev = new_node;
-	*stack_a = new_node;
-	write(1, "pb\n", 3);
+	temp->next = *stack_a;
+	*stack_a = temp;
+	write(1, "pa\n", 3);
 }
